@@ -229,17 +229,6 @@ module.exports = function (grunt) {
             }
         },
 
-        svgmin: {
-            dist: {
-                files: [{
-                    expand: true,
-                    cwd: '<%= config.app %>/images',
-                    src: '{,*/}*.svg',
-                    dest: '<%= config.dist %>/images'
-                }]
-            }
-        },
-
         htmlmin: {
             dist: {
                 options: {
@@ -321,8 +310,7 @@ module.exports = function (grunt) {
                 'compass:dist',
                 'copy:styles',
                 'browserify',
-                'imagemin',
-                'svgmin'
+                'imagemin'
             ]
         }
     });

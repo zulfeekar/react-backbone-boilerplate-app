@@ -2,7 +2,7 @@
   "name": "web-app-boilerplate",
   "private": true,
   "dependencies": {
-    "normalize.css": "latest"
+    "normalize.scss": "latest"
   },
   "devDependencies": {}
 }
