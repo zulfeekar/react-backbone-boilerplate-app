@@ -29,16 +29,16 @@ module.exports = function (grunt) {
 
         // Watches files for changes and runs tasks based on the changed files
         watch: {
-            js: {
+            jsapp: {
                 files: ['<%= config.app %>/scripts/{,*/}*.js'],
-                tasks: ['browserify'],
+                tasks: ['browserify:app'],
                 options: {
                     livereload: true
                 }
             },
             jstest: {
                 files: ['test/spec/{,*/}*.js'],
-                tasks: ['test:watch']
+                tasks: ['browserify:test', 'test:watch']
             },
             compass: {
                 files: ['<%= config.app %>/styles/{,*/}*.{scss,sass}'],
@@ -172,6 +172,11 @@ module.exports = function (grunt) {
             app: {
                 src: '<%= config.app %>/scripts/main.js',
                 dest: '<%= config.tmp %>/scripts/bundle.js'
+            },
+            test: {
+                files: {
+                    '<%= config.tmp %>/specs.js': '<%= config.test %>/spec/{,*/}*.js'
+                }
             }
         },
 
@@ -285,7 +290,7 @@ module.exports = function (grunt) {
                 'browserify'
             ],
             test: [
-                'copy:styles'
+                'browserify:test'
             ],
             dist: [
                 'compass:dist',
@@ -323,8 +328,7 @@ module.exports = function (grunt) {
             grunt.task.run([
                 'clean:server',
                 'env:test',
-                'concurrent:test',
-                'autoprefixer'
+                'concurrent:test'
             ]);
         }
 
