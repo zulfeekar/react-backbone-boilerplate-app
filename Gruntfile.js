@@ -46,7 +46,7 @@ module.exports = function (grunt) {
             },
             styles: {
                 files: ['<%= config.app %>/styles/{,*/}*.css'],
-                tasks: ['newer:copy:styles', 'autoprefixer']
+                tasks: ['copy:styles', 'autoprefixer']
             },
             livereload: {
                 options: {
@@ -164,7 +164,7 @@ module.exports = function (grunt) {
             }
         },
 
-        // bundle app js
+        // browserify bundles
         browserify: {
             options: {
                 transform: ['envify', require('grunt-react').browserify]
@@ -202,21 +202,6 @@ module.exports = function (grunt) {
             }
         },
 
-        // Renames files for browser caching purposes
-        rev: {
-            dist: {
-                files: {
-                    src: [
-                        '<%= config.dist %>/scripts/{,*/}*.js',
-                        '<%= config.dist %>/styles/{,*/}*.css',
-                        '<%= config.dist %>/images/{,*/}*.*',
-                        '<%= config.dist %>/styles/fonts/{,*/}*.*',
-                        '<%= config.dist %>/*.{ico,png}'
-                    ]
-                }
-            }
-        },
-
         // The following *-min tasks produce minified files in the dist folder
         imagemin: {
             dist: {
@@ -243,7 +228,7 @@ module.exports = function (grunt) {
                 },
                 files: [{
                     expand: true,
-                    cwd: '<%= config.dist %>',
+                    cwd: '<%= config.app %>',
                     src: '{,*/}*.html',
                     dest: '<%= config.dist %>'
                 }]
@@ -254,23 +239,20 @@ module.exports = function (grunt) {
             dist: {
                 files: {
                     '<%= config.dist %>/styles/main.css': [
-                        '<%= config.tmp %>/styles/{,*/}*.css',
-                        '<%= config.app %>/styles/{,*/}*.css'
+                        '<%= config.tmp %>/styles/{,*/}*.css'
                     ]
                 }
             }
         },
+
         uglify: {
             dist: {
                 files: {
-                    '<%= config.dist %>/scripts/scripts.js': [
-                        '<%= config.dist %>/scripts/scripts.js'
+                    '<%= config.dist %>/scripts/bundle.js': [
+                        '<%= config.tmp %>/scripts/bundle.js'
                     ]
                 }
             }
-        },
-        concat: {
-            dist: {}
         },
 
         // Copies remaining files to places other tasks can use
@@ -282,7 +264,6 @@ module.exports = function (grunt) {
                     cwd: '<%= config.app %>',
                     dest: '<%= config.dist %>',
                     src: [
-                        '{,*/}*.html',
                         'styles/fonts/{,*/}*.*'
                     ]
                 }]
@@ -310,7 +291,8 @@ module.exports = function (grunt) {
                 'compass:dist',
                 'copy:styles',
                 'browserify',
-                'imagemin'
+                'imagemin',
+                'htmlmin'
             ]
         }
     });
@@ -357,16 +339,13 @@ module.exports = function (grunt) {
         'env:prod',
         'concurrent:dist',
         'autoprefixer',
-        'concat',
         'cssmin',
         'uglify',
-        'copy:dist',
-        'rev',
-        'htmlmin'
+        'copy:dist'
     ]);
 
     grunt.registerTask('default', [
-        'newer:jshint',
+        'jshint',
         'test',
         'build'
     ]);
