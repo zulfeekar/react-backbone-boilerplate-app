@@ -3,26 +3,29 @@
 Customised environment based on yeoman generator-webapp.
 Build uses browserify to bundle the application.
 
-Run
+Available commands :
+
+To Start to develop with livereload :
 ```bash
 grunt serve
 ```
-to start to develop with livereload.
 
-Run
+To run the tests :
 ```bash
 grunt test
 ```
-to run tests.
 
-Run
+To build (jshint + test + build):
 ```bash
 grunt
 ```
-to build.
 
-Run
+To build without jshint and testing :
 ```bash
 grunt build
 ```
-to build without jshint and testing.
+
+To build and start a local server :
+```bash
+grunt serve:dist
+```
